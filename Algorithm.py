@@ -1,4 +1,15 @@
-import re
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Jul 14 14:59:44 2024
+Modified to enhance efficiency and integrate with UI by Justin Fan
+
+@author: samsun.knight, justin.fan
+
+
+"""
+
+
 import numpy as np
 import torch
 from tqdm import tqdm
