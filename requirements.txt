@@ -4,3 +4,4 @@ transformers
 matplotlib
 tqdm
 nltk
+scipy
