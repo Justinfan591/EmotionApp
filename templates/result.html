@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emotion Analysis Result</title>
+    <title>Emotion Graph</title>
 </head>
 <body>
-    <h1>Emotion Analysis Result</h1>
-    <img src="data:image/png;base64,{{ image_base64 }}" alt="Emotion Graph">
-    <br><a href="/">Go Back</a>
+    <h1>Emotion Graph</h1>
+    <img src="{{ graph_url }}" alt="Emotion Graph">
+    <br><br>
+    <a href="{{ url_for('download_file', filename='generated_graph.png') }}">Download Graph</a>
 </body>
 </html>

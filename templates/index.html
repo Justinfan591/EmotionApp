@@ -2,14 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emotion Analysis</title>
+    <title>Upload File</title>
 </head>
 <body>
-    <h1>Upload Text for Emotion Analysis</h1>
-    <form action="/analyze" method="post">
-        <textarea name="text" rows="10" cols="50"></textarea><br>
-        <input type="submit" value="Analyze">
+    <h1>Emotion Analysis</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <label for="file">Choose file to upload:</label>
+        <input type="file" id="file" name="file">
+        <br><br>
+        <input type="submit" value="Upload File">
     </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 </body>
 </html>

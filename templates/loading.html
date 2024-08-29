@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+</head>
+<body>
+    <h2>Analysis in progress, please wait...</h2>
+    <div id="progressBars">
+        <div>Chunk Progress: <progress id="chunkProgress" value="0" max="100"></progress></div>
+        <div>Overall Progress: <progress id="overallProgress" value="0" max="100"></progress></div>
+    </div>
+    <script>
+        // Optionally add JavaScript to automatically refresh or redirect to the result page
+        setTimeout(function() {
+            window.location.href = "/result";
+        }, 10000); // Redirect after 10 seconds (adjust as needed)
+    </script>
+</body>
+</html>
