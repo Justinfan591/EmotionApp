@@ -1,9 +1,15 @@
-from flask import Flask, render_template, request, send_file
-from Algorithm import Algorithm
 import os
+import warnings  # Add this import
+
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+from Algorithm import Algorithm
+from werkzeug.utils import secure_filename
+
+# Suppress the specific FutureWarning from the transformers library
+warnings.filterwarnings("ignore", category=FutureWarning, module="transformers.tokenization_utils_base")
 
 app = Flask(__name__)
-algorithm = Algorithm()
+app.secret_key = "your_secret_key"  # Replace with your actual secret key
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -24,6 +30,7 @@ def index():
 @app.route("/download-graph")
 def download_graph():
     return send_file("static/graph.png", as_attachment=True)
+
 
 if __name__ == "__main__":
     from waitress import serve
