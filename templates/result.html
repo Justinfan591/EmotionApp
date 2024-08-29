@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Emotion Graph</title>
-</head>
-<body>
-    <h1>Emotion Graph</h1>
-    <img src="{{ graph_url }}" alt="Emotion Graph">
-    <br><br>
-    <a href="{{ url_for('download_file', filename='generated_graph.png') }}">Download Graph</a>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Emotion Analysis Results</title>
+  </head>
+  <body>
+    <h1>Analysis Result</h1>
+    <img src="{{ graph_image }}" alt="Emotion Graph">
+    <br>
+    <a href="/download-graph">Download Graph</a>
+  </body>
 </html>

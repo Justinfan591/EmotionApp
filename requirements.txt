@@ -2,12 +2,6 @@ Flask
 torch
 transformers
 matplotlib
-tqdm
 nltk
+waitress
 scipy
-
-Flask==3.0.0
-transformers==4.44.2
-nltk==3.9.1
-matplotlib==3.9.2
-

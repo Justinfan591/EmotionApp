@@ -1,26 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Upload File</title>
-</head>
-<body>
-    <h1>Emotion Analysis</h1>
+  <head>
+    <meta charset="utf-8">
+    <title>Emotion Analysis App</title>
+  </head>
+  <body>
+    <h1>Upload a File for Emotion Analysis</h1>
     <form action="/" method="post" enctype="multipart/form-data">
-        <label for="file">Choose file to upload:</label>
-        <input type="file" id="file" name="file">
-        <br><br>
-        <input type="submit" value="Upload File">
+      <input type="file" name="file">
+      <input type="submit" value="Upload">
     </form>
-
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-</body>
+  </body>
 </html>

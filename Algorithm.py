@@ -21,7 +21,8 @@ from scipy.special import expit
 import gc
 
 # Ensure the VADER lexicon is downloaded
-nltk.download('vader_lexicon')
+nltk.data.path.append('./nltk_data/')
+sid = SentimentIntensityAnalyzer()
 
 
 class Algorithm:
