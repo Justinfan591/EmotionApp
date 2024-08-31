@@ -1,5 +1,5 @@
 import os
-import warnings  # Add this import
+import warnings
 
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file
 from Algorithm import Algorithm
@@ -11,6 +11,9 @@ warnings.filterwarnings("ignore", category=FutureWarning, module="transformers.t
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Replace with your actual secret key
 
+# Initialize the Algorithm class
+algorithm = Algorithm()
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
@@ -20,6 +23,10 @@ def index():
 
         text = file.read().decode("utf-8")
         fig = algorithm.plot_emotion_graph(text, progress_callback_chunk=None, progress_callback_overall=None)
+
+        # Ensure the static directory exists
+        if not os.path.exists("static"):
+            os.makedirs("static")
 
         fig_path = os.path.join("static", "graph.png")
         fig.savefig(fig_path)
@@ -31,7 +38,9 @@ def index():
 def download_graph():
     return send_file("static/graph.png", as_attachment=True)
 
-
 if __name__ == "__main__":
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=8080)
+    app.run(debug=True, port=5001)  # Use this for local testing
+
+    # Uncomment the following line for production deployment using waitress
+    # from waitress import serve
+    # serve(app, host="0.0.0.0", port=8080)

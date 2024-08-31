@@ -1,5 +1,22 @@
-version: 1.0
+version: 1
 frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm install
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: /build
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+
+# Backend (optional, depends on your setup)
+backend:
   phases:
     preBuild:
       commands:
@@ -7,11 +24,3 @@ frontend:
     build:
       commands:
         - python application.py
-  artifacts:
-    baseDirectory: /
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - node_modules/**/*
-
