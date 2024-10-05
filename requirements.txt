@@ -1,7 +1,8 @@
-Flask
+streamlit
 torch
 transformers
-matplotlib
+numpy
 nltk
-waitress
+matplotlib
 scipy
+tqdm

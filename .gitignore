@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.nltk_data/
+.elasticbeanstalk/
+.DS_Store

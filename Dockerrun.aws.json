@@ -1,0 +1,17 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "emotion-analysis-app",
+      "image": "your_dockerhub_username/emotion-analysis-app:latest",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 8501
+        }
+      ]
+    }
+  ]
+}
