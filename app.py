@@ -2,12 +2,8 @@ import streamlit as st
 from algorithm import Algorithm
 import matplotlib.pyplot as plt
 import io
-import nltk
-
-
 
 def main():
-
     st.title("Emotion Analysis of Novels")
 
     st.write("""
@@ -55,8 +51,4 @@ def main():
             status_text.text("Analysis complete!")
 
 if __name__ == "__main__":
-    nltk.data.path.append('/usr/local/nltk_data')
-
-
     main()
-

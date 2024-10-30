@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Modified to enhance efficiency, integrate with UI, and adjust for AWS deployment.
 """
@@ -13,14 +12,8 @@ from scipy.special import expit
 import gc
 from tqdm import tqdm
 
-# Ensure NLTK data is downloaded
-nltk.data.path.append('/usr/local/nltk_data')
-
-
-
 # Check for GPU availability
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
 
 class Algorithm:
     def __init__(self):
@@ -78,8 +71,9 @@ class Algorithm:
         # Prepare data for plotting
         emotion_trends = {emotion: [] for emotion in emotions_of_interest}
         for scores in emotion_scores:
-            for emotion in emotions_of_interest:
-                emotion_trends[emotion].append(scores.get(emotion, 0))
+            for emotion, score in scores.items():
+                if emotion in emotions_of_interest:
+                    emotion_trends[emotion].append(score)
 
         # Plotting
         fig, ax = plt.subplots(figsize=(12, 6))

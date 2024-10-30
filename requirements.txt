@@ -2,7 +2,7 @@ streamlit
 torch
 transformers
 numpy
-nltk
+nltk==3.6.7
 matplotlib
 scipy
 tqdm
