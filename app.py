@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 import io
 import nltk
 
-nltk.data.path.append('./nltk_data/')
-nltk.download('punkt', download_dir='./nltk_data/', quiet=True)
 
 
 def main():
@@ -57,5 +55,7 @@ def main():
             status_text.text("Analysis complete!")
 
 if __name__ == "__main__":
+    nltk.data.path.append('./nltk_data/')
+    nltk.download('punkt', download_dir='./nltk_data/', quiet=True)
     main()
 
