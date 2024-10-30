@@ -14,8 +14,9 @@ import gc
 from tqdm import tqdm
 
 # Ensure NLTK data is downloaded
-nltk.data.path.append('./nltk_data/')
-nltk.download('punkt', download_dir='./nltk_data/', quiet=True)
+nltk.data.path.append('/usr/local/nltk_data')
+
+
 
 # Check for GPU availability
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

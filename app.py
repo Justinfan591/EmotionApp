@@ -55,7 +55,8 @@ def main():
             status_text.text("Analysis complete!")
 
 if __name__ == "__main__":
-    nltk.data.path.append('./nltk_data/')
-    nltk.download('punkt', download_dir='./nltk_data/', quiet=True)
+    nltk.data.path.append('/usr/local/nltk_data')
+
+
     main()
 
