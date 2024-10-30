@@ -15,7 +15,7 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Download NLTK 'punkt' data to /usr/local/nltk_data
+# Download NLTK data
 RUN python -m nltk.downloader punkt -d /usr/local/nltk_data
 
 # Set the NLTK_DATA environment variable

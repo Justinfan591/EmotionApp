@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
-Updated to reflect the original algorithm, processing text in chunks and plotting specified emotions.
+Updated to reflect the original algorithm, processing text slices and plotting specified emotions.
 """
 
-import os
 import numpy as np
 import torch
 from transformers import RobertaTokenizer, RobertaForSequenceClassification
@@ -23,16 +22,17 @@ class Algorithm:
         self.model = RobertaForSequenceClassification.from_pretrained("SamLowe/roberta-base-go_emotions")
         self.model.to(device)  # Move model to GPU if available
         self.labels = self.model.config.id2label
+        # Define emotions of interest
+        self.emotions_of_interest = ['sadness', 'anger', 'fear', 'joy']  # Excluding 'surprise'
 
-    def split_text_into_chunks(self, text, chunk_size=10000):
-        # Remove HTML tags and split text into chunks of specified size
-        text = re.sub('<[^>]+>', '', str(text))
-        chunks = [text[i:i+chunk_size] for i in range(0, len(text), chunk_size)]
-        return chunks
+    def split_text_into_chunks(self, text_slice):
+        # Remove HTML tags and split text into sentences
+        sentences = re.sub('<[^>]+>', '', str(text_slice)).split('. ')
+        return sentences
 
     def score_emotions(self, text_list):
         return_list = []
-        for j, text in enumerate(tqdm(text_list, desc="Scoring emotions", leave=False)):
+        for text in text_list:
             try:
                 inputs = self.tokenizer(text, return_tensors='pt', truncation=True, max_length=512)
                 inputs = inputs.to(device)
@@ -51,45 +51,53 @@ class Algorithm:
         return return_list
 
     def plot_emotion_graph(self, text, progress_callback=None):
-        # Define emotions of interest
-        emotions_of_interest = ['sadness', 'anger', 'fear', 'joy']
-
-        # Split text into chunks
-        chunks = self.split_text_into_chunks(text)
-
-        num_chunks = len(chunks)
         emots = []
 
-        for idx, chunk in enumerate(tqdm(chunks, desc="Processing chunks", leave=False)):
-            # Process progress
-            if progress_callback:
-                progress = (idx + 1) / num_chunks
-                progress_callback(progress)
+        text_length = len(text)
+        num_percentiles = 100
 
-            # Score emotions for the chunk
-            chunks_scored = self.score_emotions([chunk])
+        for percentile in tqdm(range(num_percentiles), desc="Processing text slices", leave=False):
+            # Calculate start and end indices for the text slice
+            bot = (text_length * percentile) // num_percentiles
+            top = bot + 10000  # Fixed slice length of 10,000 characters
+
+            text_slice = text[bot:top]
+
+            # Split the text slice into chunks (sentences)
+            chunks = self.split_text_into_chunks(text_slice)
+
+            # Score emotions for the chunks
+            chunks_scored = self.score_emotions(chunks)
 
             # Aggregate emotion scores
             this_chunk = {}
-            for emotion in emotions_of_interest:
+            for emotion in self.emotions_of_interest:
                 try:
-                    scores = [subchunk['score'] for sublist in chunks_scored for subchunk in sublist if subchunk['label'] == emotion]
+                    scores = [
+                        [subchunk for subchunk in chunk if subchunk['label'] == emotion][0]['score']
+                        for chunk in chunks_scored
+                    ]
                     avg_score = np.nanmean(scores) if scores else 0
                 except Exception as e:
                     avg_score = 0
                 this_chunk[emotion] = avg_score
             emots.append(this_chunk)
 
-        # Prepare data for plotting
-        x_values = range(len(emots))
-        fig, ax = plt.subplots(figsize=(12, 6))
+            # Update progress
+            if progress_callback:
+                progress = (percentile + 1) / num_percentiles
+                progress_callback(progress)
 
-        for emotion in emotions_of_interest:
+        # Plotting
+        fig, ax = plt.subplots(figsize=(12, 6))
+        x_values = range(1, num_percentiles + 1)
+
+        for emotion in self.emotions_of_interest:
             emotion_scores = [emotion_score[emotion] for emotion_score in emots]
             ax.plot(x_values, emotion_scores, label=emotion)
 
-        ax.set_xlabel('Chunk Index')
-        ax.set_ylabel('Emotion Score')
+        ax.set_xlabel('Percentile of Text')
+        ax.set_ylabel('Average Emotion Score')
         ax.set_title('Emotion Analysis Over Text')
         ax.legend()
         plt.tight_layout()
