@@ -1,22 +1,25 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+# Use NVIDIA's CUDA base image with Python 3.9
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && \
-    apt-get install -y git && \
+    apt-get install -y git python3-pip && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy the requirements file into the container
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies (excluding torch)
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Install PyTorch with CUDA support
+RUN pip3 install --no-cache-dir torch==2.0.1+cu118 torchvision==0.15.2+cu118 torchaudio==2.0.2 --extra-index-url https://download.pytorch.org/whl/cu118
 
 # Download NLTK data
-RUN python -m nltk.downloader punkt -d /usr/local/nltk_data
+RUN python3 -m nltk.downloader punkt -d /usr/local/nltk_data
 
 # Set the NLTK_DATA environment variable
 ENV NLTK_DATA=/usr/local/nltk_data
@@ -28,7 +31,7 @@ COPY . .
 EXPOSE 8501
 
 # Download and cache models during build
-RUN python -c "from transformers import RobertaTokenizer, RobertaForSequenceClassification; \
+RUN python3 -c "from transformers import RobertaTokenizer, RobertaForSequenceClassification; \
 RobertaTokenizer.from_pretrained('SamLowe/roberta-base-go_emotions'); \
 RobertaForSequenceClassification.from_pretrained('SamLowe/roberta-base-go_emotions')"
 
